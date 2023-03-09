@@ -1,0 +1,82 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+
+<!-- Member account creation -->
+<h3 class="clearfix">Sign in</h3>
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-lg-5 py-5">
+        <div class="col-lg-7 text-center text-lg-start">
+            <!-- ALERT -->
+
+            <div class="toast bg-light"
+                 role="alert"
+                 aria-live="assertive"
+                 aria-atomic="true"
+                 data-delay="3000">
+                <div class="toast-header">
+                    <strong class="mr-auto">Success!</strong>
+                    <small class="text-muted">Just now</small>
+                    <button type="button"
+                            class="ml-2 mb-1 close"
+                            data-dismiss="toast"
+                            aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="toast-body text-success">
+                    Your have successfully logged in!
+                </div>
+            </div>
+
+            <!-- ALERT END -->
+            <h1 class="display-4 fw-bold lh-1 mb-3">TheCause | Login</h1>
+            <h1 class="display-4 fw-bold lh-1 mb-3">Welcome Back</h1>
+            <p class="col-lg-10 fs-4">
+                <center> Please enter your login information to gain access or create a cause.</center>
+            </p>
+        </div>
+        <div class="col-md-10 mx-auto col-lg-5">
+            <form method="post" class="p-4 px-md-5 border rounded-3 bg-light">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-floating mb-3">
+                    <label asp-for="Input.Email"></label>
+                    <input asp-for="Input.Email" type="email" class="form-control"  placeholder="name@example.com">
+                  
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <label asp-for="Input.Password"></label>
+                    <input type="password" class="form-control" asp-for="Input.Password" placeholder="Password">
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="checkbox mb-3">
+                    <label asp-for="Input.RememberMe">
+                        <input asp-for="Input.RememberMe" />
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                    </label>
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" type="submit"
+                        id="signin-submit-button">
+                    Sign in
+                </button>
+                <hr class="my-4">
+                <small class="text-muted">You don't have account?
+                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                </small>
+                <hr class="my-4">
+                <small class="text-muted">
+                    <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                </small>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

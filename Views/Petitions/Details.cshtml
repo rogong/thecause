@@ -1,0 +1,180 @@
+﻿@model TheCause.Models.Petition
+
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section>
+    <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+        <div class="row align-items-center g-lg-5 py-5">
+            <div class="col-lg-7 text-center text-lg-start">
+                <h1 class="display-4 fw-bold lh-1 mb-3">PROTECT OUR NHS</h1>
+
+                <section class="counts">
+                    <span>
+                        <i class="fa fa-user"></i> Written by John Derik
+                    </span>
+
+                    <span>
+                        <i class="fa fa-comment"></i> 3 Comments
+                    </span>
+
+                </section>
+
+
+                <img class="" src="@Html.DisplayFor(model => model.PhotoUrl)" alt="" width="400">
+
+
+                <p class="mt-4">
+                    @Html.DisplayFor(model => model.Description)
+                </p>
+
+
+            </div>
+            <div class="col-md-10 mx-auto col-lg-5">
+                <!-- ALERT -->
+                 @if (@ViewBag.progressMessage != null)
+                    {
+                        <div class="alert alert-danger  alert-dismissible" role="alert">
+                            @ViewBag.progressMessage
+                        </div>
+
+                    }
+
+                 @if (@ViewBag.progressMessage2 != null)
+                    {
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.progressMessage2
+                </div>
+                    }
+
+                <div class="toast bg-light"
+                     role="alert"
+                     aria-live="assertive"
+                     aria-atomic="true"
+                     data-delay="3000">
+                    <div class="toast-header">
+                        <strong class="mr-auto">Success!</strong>
+                        <small class="text-muted">Just now</small>
+                        <button type="button"
+                                class="ml-2 mb-1 close"
+                                data-dismiss="toast"
+                                aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="toast-body text-success">
+                        Your petition signed successfully!
+                    </div>
+                </div>
+
+                <!-- ALERT END -->
+                <p>
+
+                    <strong style="color:red;">@ViewBag.SignsCount</strong>
+                    <b>people have signed.</b> Add your voice now!
+                </p>
+                
+          
+                <form method="post" asp-action="Sign" class="p-4 p-md-5 border rounded-3 bg-light">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    @Html.Hidden("UpdatedAt")
+                    @Html.Hidden("CreatedAt")
+                    @Html.Hidden("UserId")
+                    @Html.Hidden("PetitionId")
+
+
+                    
+
+                    <h4>SIGN THIS PETITION</h4>
+                    <input type="text" class="form-control" value="@Html.DisplayFor(model => model.Id)"
+                           id="petitionId" hidden>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" value="@User.Identity.Name"
+                               id="floatingInput" placeholder="email" disabled>
+
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <textarea  class="form-control" row="4" placeholder="comment">
+
+                        </textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="">
+                        <label class="signoption hasPopoverAsk">
+                            <input checked="checked" name="Submissions[show_name]" id="Submissions_show_name" value="1" type="checkbox">
+                            Abide 100% and not acting in contrary
+                        </label>
+                        <div class="popoverTriggerWrapper">
+                            <div id="pop0" class="popoverTrigger" data-content="Other signers will see your name but not your email" data-original-title="" title="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <label class="signoption hasPopoverAsk">
+                            <input checked="checked" name="Submissions[subscribe_to_similar]" id="Submissions_subscribe_to_similar" value="1" type="checkbox">
+                            Keep me informed on similar campaign
+                        </label>
+                        <div class="popoverTriggerWrapper">
+                            <div id="pop1" class="popoverTrigger" data-content="A great way to support similar causes! We promise not to spam you" data-original-title="" title="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="w-100 btn btn-lg btn-primary" type="submit" id="sign-submit-button">Sign Petition</button>
+                    <hr class="my-4">
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="signature mt-4">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col">
+            <h1> SIGNATURES</h1>
+
+        </div>
+        <div class="col-2"></div>
+    </div>
+
+
+    <!-- <p>No signatures yet. Be the first one!</p> -->
+    
+    <small>
+        <div class="row pl-4">
+            @foreach (var sign in @ViewBag.Signs)
+                {
+               <div class="bg-light m-4 p-2">
+                
+                    <h6 id="userId">  @sign.UserId </h6>
+
+            </div>
+            }
+        </div>
+    </small>
+    
+</section>
+
+
+
+@section Scripts{
+
+    <script>
+      
+        //Dislay error alert and fade it
+        $(".alert-dismissible").fadeTo(4000, 500).slideUp(500, function () {
+            $(".alert-dismissible").alert('close');
+        });
+    </script>
+}

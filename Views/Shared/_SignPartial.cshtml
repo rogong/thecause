@@ -1,0 +1,13 @@
+﻿@model IEnumerable<TheCause.Models.Sign>
+
+@{
+}
+
+
+  @foreach (var item in Model){
+            <div class="bg-light m-4 p-2">
+        <h6> @Html.DisplayFor(modelItem => item.UserId)</h6>
+
+            </div>
+
+ }
