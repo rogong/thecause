@@ -22,7 +22,7 @@
                 <img class="mb-2" src="~/images/logo.png" alt="" width="100" height="50">
             </a>
 
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <div class="collapse navbar-collapse ml-5" id="navbarTogglerDemo03">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item active">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
@@ -32,6 +32,14 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Service">Services</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a style="color: #000; font-weight:bold" class="nav-link" asp-area="" asp-controller="Home" asp-action="Causes">Causes</a>
+                    </li>
+
+                    <li class="nav-item ml-5">
+                        <a class="btn text-white" asp-area="" asp-controller="Petitions" asp-action="Create">Create Cause</a>
                     </li>
                 </ul>
                 <partial name="_LoginPartial" />

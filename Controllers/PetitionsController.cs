@@ -29,6 +29,19 @@ namespace TheCause.Controllers
         // GET: Petitions
         public async Task<IActionResult> Index()
         {
+            var petitions = await _context.Petitions
+                .OrderByDescending(p => p.CreatedAt)
+                .Where(p => p.UserId == User.Identity.Name)
+                .Take(5)
+                .ToListAsync();
+
+            return View(petitions);
+        }
+        
+
+        //Dashboard
+        public async Task<IActionResult> Dashboard()
+        {
             return View(await _context.Petitions.ToListAsync());
         }
 
@@ -48,9 +61,9 @@ namespace TheCause.Controllers
                 return NotFound();
             }
 
-            var signs = await _context.Signs.
-               Where(s => s.PetitionId == id).
-               ToListAsync();
+            var signs = await _context.Signs
+               .Where(s => s.PetitionId == id)
+               .ToListAsync();
 
             ViewBag.SignsCount = signs.Count;
             ViewBag.Signs = signs;
@@ -83,7 +96,7 @@ namespace TheCause.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,CreatedAt,UpdatedAt,UserId,PhotoUrl")] Petition petition,
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,CreatedAt,UpdatedAt,UserId,PhotoUrl,NSignature")] Petition petition,
             IFormFile file, string returnUrl = null)
         {
             if (ModelState.IsValid)
@@ -103,9 +116,14 @@ namespace TheCause.Controllers
 
                     petition.PhotoUrl = WebUrl + fileName;
                 }
+               
+
 
                 _context.Add(petition);
                 await _context.SaveChangesAsync();
+
+                ViewBag.message = "The cause was created successfully!";
+
                 return RedirectToAction(nameof(Index));
             }
             return View(petition);
@@ -124,24 +142,52 @@ namespace TheCause.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.UpdatedAt = DateTime.Now;
+            ViewBag.PhotoUrl = petition.PhotoUrl;
             return View(petition);
         }
 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CreatedAt,UpdatedAt,UserId")] Petition petition)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CreatedAt,UpdatedAt,UserId,PhotoUrl,NSignature")] Petition petition,
+            IFormFile file, string returnUrl = null)
         {
+
             if (id != petition.Id)
             {
                 return NotFound();
             }
 
+           
+
             if (ModelState.IsValid)
             {
                 try
-                {
-                    _context.Update(petition);
+                {//Upload data
+                    if (file != null)
+                    {
+                        var fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + file.FileName;
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), _hostingEnv.WebRootPath, "uploads", fileName);
+                        //var stream = new FileStream(path, FileMode.Create);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        var WebUrl = $"{this.Request.Scheme}://{this.Request.Host}/uploads/";
+
+                        petition.PhotoUrl = WebUrl + fileName;
+
+                        _context.Update(petition);
+                    }
+                    else
+                    {
+                        //petition.PhotoUrl = pet.PhotoUrl;
+                        _context.Update(petition);
+                    }
+                   
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -155,6 +201,8 @@ namespace TheCause.Controllers
                         throw;
                     }
                 }
+
+                ViewBag.message = "The cause was updated successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(petition);
@@ -204,10 +252,21 @@ namespace TheCause.Controllers
                 Where(s => s.PetitionId == sign.PetitionId).
                 ToListAsync();
 
-            foreach(var sig in signs)
+
+            var signCount = signs.Count;
+            
+
+            foreach (var sig in signs)
             {
                 if(sig.UserId == sign.UserId) {
-                    ViewBag.progressMessage = "You have Signed before, no multiple signatures!";
+                    ViewBag.message = "You have Signed before, no multiple signatures!";
+                    returnUrl = returnUrl ?? Url.Content("~/");
+                    return LocalRedirect(returnUrl);
+                }
+
+                if (signCount >= 400)
+                {
+                    ViewBag.message = "Signing is closed,the number of signatures is complete!";
                     returnUrl = returnUrl ?? Url.Content("~/");
                     return LocalRedirect(returnUrl);
                 }

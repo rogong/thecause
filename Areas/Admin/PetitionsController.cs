@@ -20,6 +20,12 @@ namespace TheCause.Areas.Admin
             _context = context;
         }
 
+        //Dashboard
+        public async Task<IActionResult> Dashboard()
+        {
+            return View(await _context.Petitions.ToListAsync());
+        }
+
         // GET: Admin/Petitions
         public async Task<IActionResult> Index()
         {

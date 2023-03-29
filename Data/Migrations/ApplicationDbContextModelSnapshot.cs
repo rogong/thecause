@@ -240,11 +240,11 @@ namespace TheCause.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("NSignature")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhotoUrl")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SignCount")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -364,7 +364,7 @@ namespace TheCause.Data.Migrations
             modelBuilder.Entity("TheCause.Models.Sign", b =>
                 {
                     b.HasOne("TheCause.Models.Petition", "Petition")
-                        .WithMany()
+                        .WithMany("Signs")
                         .HasForeignKey("PetitionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

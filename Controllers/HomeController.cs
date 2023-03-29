@@ -28,6 +28,17 @@ namespace TheCause.Controllers
 
             var petitions = await _context.Petitions
                 .Include(s => s.Signs)
+                .OrderByDescending(p => p.CreatedAt )
+                .ToListAsync();
+
+            return View(petitions);
+        }
+
+        // GET: Petitions
+        public async Task<IActionResult> Causes()
+        {
+            var petitions = await _context.Petitions
+                .OrderByDescending(p => p.CreatedAt)
                 .ToListAsync();
 
             return View(petitions);

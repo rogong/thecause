@@ -4,6 +4,7 @@
 }
 
 <section class="Hero secondaryColor" style="margin-bottom:0px;">
+    <p class="alert alert-info">@ViewBag.message</p>
     <div class="px-4 py-5 my-5 text-center">
 
         <h1 class="display-5 fw-bold">Make a Better World</h1>
@@ -66,7 +67,7 @@
                 <p>@Html.DisplayFor(modelItem => item.Description)</p>
             <div class="row">
 
-                    <span class="col-lg-4"><b>@Html.DisplayFor(modelItem => item.Signs.Count) people have signed.</b> Let's hit 500,000!</span>
+                    <span class="col-lg-4"><b>@Html.DisplayFor(modelItem => item.Signs.Count) people have signed.</b> Let's hit @Html.DisplayFor(modelItem => item.NSignature) !</span>
 
                 <button type="button" class="btn text-white btn-lg px-4 gap-3   ">
                         <a asp-controller="Petitions" asp-action="Details"

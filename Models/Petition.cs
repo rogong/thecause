@@ -18,7 +18,7 @@ namespace TheCause.Models
         public string UpdatedAt { get; set; }
         [Required]
         public string UserId { get; set;}
-
+        public int NSignature { get; set; }
         public ICollection<Sign> Signs { get; set; }
 
         public string PhotoUrl { get; set; }

@@ -2,7 +2,7 @@
 
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detai#ls";
 }
 
 <section>
@@ -13,7 +13,7 @@
 
                 <section class="counts">
                     <span>
-                        <i class="fa fa-user"></i> Written by John Derik
+                        <i class="fa fa-user"></i> Written by  @Html.DisplayFor(model => model.UserId)
                     </span>
 
                     <span>
@@ -21,6 +21,16 @@
                     </span>
 
                 </section>
+                <!--  AddToAny BEGIN -->
+                <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+                    <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+                    <a class="a2a_button_twitter"></a>
+                    <a class="a2a_button_email"></a>
+                    <a class="a2a_button_reddit"></a>
+
+                </div>
+
+                <!-- AddToAny END -->
 
 
                 <img class="" src="@Html.DisplayFor(model => model.PhotoUrl)" alt="" width="400">
@@ -34,18 +44,18 @@
             </div>
             <div class="col-md-10 mx-auto col-lg-5">
                 <!-- ALERT -->
-                 @if (@ViewBag.progressMessage != null)
+                 @if (@ViewBag.message != null)
                     {
                         <div class="alert alert-danger  alert-dismissible" role="alert">
-                            @ViewBag.progressMessage
+                            @ViewBag.message
                         </div>
 
                     }
 
-                 @if (@ViewBag.progressMessage2 != null)
+                 @if (@ViewBag.message2 != null)
                     {
                 <div class="alert alert-danger" role="alert">
-                    @ViewBag.progressMessage2
+                    @ViewBag.message2
                 </div>
                     }
 
@@ -163,13 +173,14 @@
             }
         </div>
     </small>
+
     
 </section>
 
 
 
 @section Scripts{
-
+  
     <script>
       
         //Dislay error alert and fade it
