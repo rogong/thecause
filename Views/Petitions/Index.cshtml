@@ -5,6 +5,12 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+  @if(@TempData["Message"] != null)
+            {
+<div class="alert alert-danger  alert-dismissible" role="alert">
+    @TempData["Message"]
+</div>
+            }
 <p>
     <a asp-action="Create">Causes</a>
 </p>
@@ -60,3 +66,13 @@
 }
     </tbody>
 </table>
+@section Scripts{
+
+    <script>
+
+        //Dislay error alert and fade it
+        $(".alert-dismissible").fadeTo(4000, 500).slideUp(500, function () {
+            $(".alert-dismissible").alert('close');
+        });
+    </script>
+}

@@ -22,7 +22,7 @@
 
                 </section>
                 <!--  AddToAny BEGIN -->
-                <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+                <div class="a2a_kit a2a_kit_size_32 a2a_default_style mb-5">
                     <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
                     <a class="a2a_button_twitter"></a>
                     <a class="a2a_button_email"></a>
@@ -44,20 +44,15 @@
             </div>
             <div class="col-md-10 mx-auto col-lg-5">
                 <!-- ALERT -->
-                 @if (@ViewBag.message != null)
+                @if (@TempData["Message"] != null)
                     {
                         <div class="alert alert-danger  alert-dismissible" role="alert">
-                            @ViewBag.message
+                        @TempData["Message"]
                         </div>
 
                     }
 
-                 @if (@ViewBag.message2 != null)
-                    {
-                <div class="alert alert-danger" role="alert">
-                    @ViewBag.message2
-                </div>
-                    }
+               
 
                 <div class="toast bg-light"
                      role="alert"

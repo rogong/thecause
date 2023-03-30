@@ -4,9 +4,16 @@
 }
 
 <section class="Hero secondaryColor" style="margin-bottom:0px;">
-    <p class="alert alert-info">@ViewBag.message</p>
+    
     <div class="px-4 py-5 my-5 text-center">
+        @if(@TempData["Message"] != null)
+            {
+                <div class="alert alert-danger  alert-dismissible" role="alert">
+                @TempData["Message"]
+               </div>            
+        }
 
+        
         <h1 class="display-5 fw-bold">Make a Better World</h1>
         <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">
@@ -27,6 +34,7 @@
 
 
 <section>
+  
     <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 ">
         <div class="col-lg-6 p-3 p-lg-5 pt-lg-3">
             <h1 class="display-4 fw-bold lh-1">The Cause</h1>
@@ -55,22 +63,22 @@
             { 
     <div class="row p-8 mt-4">
         <div class="col-lg-2"></div>
-        <div class="col-lg-4 shadow-lg">
+        <div class="col-lg-4 ">
           
-                <img class="" src="@Html.DisplayFor(modelItem => item.PhotoUrl)" alt="" width="370">
+                <img class="" src="@Html.DisplayFor(modelItem => item.PhotoUrl)" alt="" width="370" style="object-fit:cover">
         </div>
 
         <div class="col-lg-6 p-3 p-lg-5 pt-lg-3">
-            <h4><a asp-controller="Petitions" asp-action="Details"
+            <h4><a style = "color:darkblue" asp-controller="Petitions" asp-action="Details"
                             asp-route-id="@item.Id">
                             @Html.DisplayFor(modelItem => item.Title)</a></h4>
-                <p>@Html.DisplayFor(modelItem => item.Description)</p>
+                <p align ="justify">@Html.DisplayFor(modelItem => item.Description)</p>
             <div class="row">
 
                     <span class="col-lg-4"><b>@Html.DisplayFor(modelItem => item.Signs.Count) people have signed.</b> Let's hit @Html.DisplayFor(modelItem => item.NSignature) !</span>
 
                 <button type="button" class="btn text-white btn-lg px-4 gap-3   ">
-                        <a asp-controller="Petitions" asp-action="Details"
+                        <a style = "color:white; text-decoration:none;" asp-controller="Petitions" asp-action="Details"
                        asp-route-id="@item.Id">
                             Sign this cause
                         </a>

@@ -29,6 +29,7 @@ namespace TheCause.Controllers
             var petitions = await _context.Petitions
                 .Include(s => s.Signs)
                 .OrderByDescending(p => p.CreatedAt )
+                .Take(5)
                 .ToListAsync();
 
             return View(petitions);

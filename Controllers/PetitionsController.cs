@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using TheCause.Data;
 using TheCause.Models;
 using TheCause.ViewModel;
@@ -32,7 +33,6 @@ namespace TheCause.Controllers
             var petitions = await _context.Petitions
                 .OrderByDescending(p => p.CreatedAt)
                 .Where(p => p.UserId == User.Identity.Name)
-                .Take(5)
                 .ToListAsync();
 
             return View(petitions);
@@ -42,7 +42,20 @@ namespace TheCause.Controllers
         //Dashboard
         public async Task<IActionResult> Dashboard()
         {
-            return View(await _context.Petitions.ToListAsync());
+            //var signs = await _context.Signs.ToListAsync();
+
+            var totalSigns = await _context.Signs.CountAsync();
+            var totalUsers = await _context.Users.CountAsync();
+            var totalCauses = await _context.Petitions.CountAsync();
+           
+
+             TempData["TotalSigns"] = totalSigns;
+             TempData["TotalUsers"] = totalUsers;
+             TempData["TotalCauses"] = totalCauses;
+
+           
+
+            return View();
         }
 
         // GET: Petitions/Details/5
@@ -122,7 +135,7 @@ namespace TheCause.Controllers
                 _context.Add(petition);
                 await _context.SaveChangesAsync();
 
-                ViewBag.message = "The cause was created successfully!";
+                TempData["Message"] = "The cause was created successfully!";
 
                 return RedirectToAction(nameof(Index));
             }
@@ -202,7 +215,7 @@ namespace TheCause.Controllers
                     }
                 }
 
-                ViewBag.message = "The cause was updated successfully!";
+                TempData["Message"] = "The cause was updated successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(petition);
@@ -259,14 +272,14 @@ namespace TheCause.Controllers
             foreach (var sig in signs)
             {
                 if(sig.UserId == sign.UserId) {
-                    ViewBag.message = "You have Signed before, no multiple signatures!";
+                    TempData["Message1"] = "You have Signed before, no multiple signatures!";
                     returnUrl = returnUrl ?? Url.Content("~/");
                     return LocalRedirect(returnUrl);
                 }
 
                 if (signCount >= 400)
                 {
-                    ViewBag.message = "Signing is closed,the number of signatures is complete!";
+                    TempData["Message2"] = "Signing is closed,the number of signatures is complete!";
                     returnUrl = returnUrl ?? Url.Content("~/");
                     return LocalRedirect(returnUrl);
                 }
@@ -281,9 +294,11 @@ namespace TheCause.Controllers
 
                
 
-                ViewBag.progressMessage = "Your Sign added successfully";
+                
                 
             }
+
+            TempData["Message"] = "Your Sign added successfully";
 
             returnUrl = returnUrl ?? Url.Content("~/");
             return LocalRedirect(returnUrl);
